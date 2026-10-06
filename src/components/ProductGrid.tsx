@@ -26,7 +26,7 @@ export default function ProductGrid({ products, loading }: ProductGridProps) {
       <div className="py-20 text-center">
         <p className="text-sm text-muted-foreground mb-2">No products found</p>
         <p className="text-xs text-muted-foreground">
-          Add products via chat to get started.
+          Check back for our next collection.
         </p>
       </div>
     );

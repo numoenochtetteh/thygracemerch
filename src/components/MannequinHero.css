@@ -1,0 +1,68 @@
+.mannequin-hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: clamp(420px, 70svh, 600px);
+  overflow: hidden;
+  background: #fff;
+}
+
+.mannequin-hero-image {
+  display: block;
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.mannequin-shop-link {
+  position: absolute;
+  top: 320px;
+  bottom: auto;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 12px 30px;
+  border-radius: 24px;
+  background: #111;
+  color: #fff;
+  font-size: 13px;
+  text-transform: none;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
+}
+
+.mannequin-shop-link:hover {
+  background: #333;
+}
+
+.mannequin-shop-link:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 4px;
+}
+
+@media (max-width: 767px) {
+  .mannequin-hero {
+    height: clamp(420px, 72svh, 620px);
+  }
+}
+
+@media (max-height: 550px) and (orientation: landscape) {
+  .mannequin-hero {
+    height: 380px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mannequin-shop-link {
+    transition: none;
+  }
+}
+.mannequin-shop-link {
+  display: none;
+}

@@ -31,6 +31,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             src={images[imageIndex].node.url}
             alt={images[imageIndex].node.altText || node.title}
             className="w-full h-full object-cover"
+            loading="lazy"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">
@@ -53,7 +54,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       
       <p className="text-xs mb-1 line-clamp-1 uppercase">{node.title}</p>
       <p className="text-xs text-muted-foreground">
-        {formatPrice(node.priceRange.minVariantPrice.amount)}
+        {formatPrice(node.priceRange.minVariantPrice.amount, node.priceRange.minVariantPrice.currencyCode)}
       </p>
     </Link>
   );

@@ -48,8 +48,30 @@ Review the template's legal text, shipping promises, return rules, size guide an
 - Browser icon and Apple touch icon assets are included.
 - All page titles and visible brand references use ThyGraceMerch.
 
-After choosing your final domain, change the og:image and twitter:image content in index.html to the absolute HTTPS URL of /thygracemerch-social.png on that domain, then redeploy. The images currently use root-relative paths because no domain has been purchased yet.
+After choosing your final domain, change the og:image and twitter:image content in index.html to the absolute HTTPS URL of /thygracemerch-social.png on that domain, then redeploy. The images currently use root-relative paths until the chosen domain is connected.
+
+## Mannequin hero
+
+The homepage now uses the supplied ThyGraceMerch mannequin concept on a white background. Previous carousel and clothing-rail layouts are not displayed. The centred image fits within its container, preserving the head and shirt. The laptop hero is capped at 600px; the phone layout uses 72svh with a 420–620px range. Landscape phones use a shorter 380px layout. Shop Now links to /products.
+
+Asset: public/thygracemerch-mannequin-hero.png. The built-in image-generation tool edited the supplied mannequin reference, replacing the gradient background with white and removing screenshot controls. The PNG is included in this ZIP.
+
+Image edit prompt: “Change the yellow/turquoise gradient background to pure white #ffffff and remove all interface overlays: both circular arrow buttons and three dots at the bottom. Preserve exactly the glossy black mannequin, same pose, framing from head to upper thighs, white T-shirt and small green Thy Grace bag-shaped chest logo, lighting, fabric folds and proportions. Centre the mannequin in a portrait 4:5 image with head fully visible and small margin above. White seamless studio background, clean ecommerce hero asset. No new text, no new objects, no redesign of the logo.”
 
 ## Validation
 
-npm run build and TypeScript checks pass. npm run lint passes with existing non-blocking React hook/fast-refresh warnings. The build reports a non-blocking large JavaScript bundle warning. Deployment to a Vercel account and domain purchase remain separate steps.
+Production build and TypeScript checks pass. Lint completes with 13 existing non-blocking warnings. Browser checks passed at 320px, 390px, 768px and 1440px: the image loads, the hero stays compact, Shop Now opens the catalogue, and there is no horizontal page overflow or browser runtime error. Desktop and phone screenshots were visually inspected.
+
+Real checkout and accounts still require Shopify configuration. This ZIP does not automatically update GitHub, Vercel or domain settings.
+
+## Homepage clothing grid and signup
+
+Below the mannequin hero, HomeCollection displays up to eight catalogue products (four in demo mode), with four columns on laptop and two on phone. Cards open the existing product pages; mouse hover shows only that card’s second image. Prices display the currency supplied by the product data. The section and product-image backgrounds are white. View all opens the catalogue.
+
+NewsletterSignup follows the clothing grid with email, optional phone, country-code selection and consent. Email and phone validation, submit locking, pending state, error feedback and the thank-you confirmation are included.
+
+With VITE_NEWSLETTER_ENDPOINT empty, signup saves one preview record in localStorage on the visitor’s device. It is not centrally collected and no email or SMS is sent. Confirmation survives reload, and Clear signup and start again deletes the local record. Do not rely on preview mode to build a real mailing list.
+
+To connect later, set VITE_NEWSLETTER_ENDPOINT to a public server endpoint and redeploy. The form POSTs JSON: email, phone (international format or null), country (ISO country code), consent, source and createdAt. The endpoint must validate the input and save the subscriber to your email service before returning a 2xx response. Failed responses and network errors keep the form available for retry. Use CORS if the endpoint is on another origin. Keep provider API keys on the server, never in VITE_ variables. Signup is for collection updates, not customer account registration.
+
+Additional validation: desktop/mobile clothing links and cart flow passed. Signup tests passed for invalid email and phone, missing consent, normalized Ghana phone numbers, local save/reload/reset, blocked browser storage, optional phone, and mobile sizing. A mocked configured endpoint verified the POST payload, failure handling and successful retry. No live email service was used.
