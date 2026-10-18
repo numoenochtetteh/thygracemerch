@@ -1,3 +1,4 @@
+import { paystackStorefrontUrl } from '@/config/storefront';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { Loader2 } from 'lucide-react';
@@ -6,10 +7,10 @@ import { useCartStore } from '@/stores/cartStore';
 import { useFormattedPrice } from '@/hooks/useFormattedPrice';
 
 export default function CartPage() {
-  const { items, isLoading, updateQuantity, removeItem, checkout, getTotalPrice } = useCartStore();
-  const { formatPrice } = useFormattedPrice();
+  const { items, isLoading, updateQuantity, removeItem, checkout } = useCartStore();
+  const { formatPrice, formatTotal } = useFormattedPrice();
 
-  const totalPrice = getTotalPrice();
+  const totalPrice = formatTotal(items);
 
   return (
     <Layout>
@@ -60,7 +61,7 @@ export default function CartPage() {
                           <p className="text-xs text-muted-foreground mt-1">{item.variantTitle}</p>
                         )}
                         <p className="text-xs mt-2">
-                          {formatPrice(item.price.amount)}
+                          {formatPrice(item.price.amount, item.price.currencyCode)}
                         </p>
                       </div>
 
@@ -104,7 +105,7 @@ export default function CartPage() {
                 <div className="space-y-3 mb-6">
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-muted-foreground">Subtotal</span>
-                    <span>{formatPrice(totalPrice.toString())}</span>
+                    <span>{totalPrice}</span>
                   </div>
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-muted-foreground">Shipping</span>
@@ -115,7 +116,7 @@ export default function CartPage() {
                 <div className="border-t border-border pt-4 mb-6">
                   <div className="flex items-center justify-between text-xs">
                     <span className="uppercase">Total</span>
-                    <span>{formatPrice(totalPrice.toString())}</span>
+                    <span>{totalPrice}</span>
                   </div>
                 </div>
 
@@ -130,12 +131,12 @@ export default function CartPage() {
                       Creating checkout...
                     </>
                   ) : (
-                    'Checkout'
+                    paystackStorefrontUrl ? 'Continue to Paystack store' : 'Checkout'
                   )}
                 </button>
 
                 <p className="text-xs text-muted-foreground text-center mt-4">
-                  Taxes calculated at checkout
+                  {paystackStorefrontUrl ? 'Choose your items again on Paystack. This local cart does not transfer. Payment is in GHS.' : 'Taxes calculated at checkout'}
                 </p>
               </div>
 

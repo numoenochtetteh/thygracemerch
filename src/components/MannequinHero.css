@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: clamp(420px, 70svh, 600px);
+  height: clamp(650px, 90svh, 1000px);
   overflow: hidden;
   background: #fff;
 }
@@ -12,7 +12,9 @@
 .mannequin-hero-image {
   display: block;
   height: 100%;
-  width: 100%;
+  width: auto;
+  max-width: none;
+  flex-shrink: 0;
   object-fit: contain;
   object-position: center;
 }
@@ -48,13 +50,13 @@
 
 @media (max-width: 767px) {
   .mannequin-hero {
-    height: clamp(420px, 72svh, 620px);
+    height: clamp(500px, 72svh, 700px);
   }
 }
 
 @media (max-height: 550px) and (orientation: landscape) {
   .mannequin-hero {
-    height: 380px;
+    height: 560px;
   }
 }
 

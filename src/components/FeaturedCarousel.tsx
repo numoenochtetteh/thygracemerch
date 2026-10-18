@@ -159,7 +159,7 @@ export default function FeaturedCarousel({ collectionHandle = "frontpage" }: Fea
           <div className="flex items-center cursor-grab active:cursor-grabbing">
           {slides.map((product, index) => {
             const imageUrl = product.node.images.edges[0]?.node.url;
-            const price = formatPrice(product.node.priceRange.minVariantPrice.amount);
+            const price = formatPrice(product.node.priceRange.minVariantPrice.amount, product.node.priceRange.minVariantPrice.currencyCode);
 
             const isActive = product.node.id === activeProductId;
             const isHovered = hoveredIndex === index;

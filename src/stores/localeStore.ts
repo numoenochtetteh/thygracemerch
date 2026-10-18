@@ -12,6 +12,7 @@ export interface LocaleOption {
 
 // Fallback demo options when Shopify is not connected
 export const DEMO_LOCALE_OPTIONS: LocaleOption[] = [
+  { country: 'Ghana', countryCode: 'GH', currency: 'GH₵', currencyCode: 'GHS', locale: 'en-GH' },
   { country: 'United States', countryCode: 'US', currency: '$', currencyCode: 'USD', locale: 'en-US' },
   { country: 'United Kingdom', countryCode: 'GB', currency: '£', currencyCode: 'GBP', locale: 'en-GB' },
   { country: 'European Union', countryCode: 'DE', currency: '€', currencyCode: 'EUR', locale: 'de-DE' },
@@ -24,6 +25,7 @@ export const DEMO_LOCALE_OPTIONS: LocaleOption[] = [
 function shopifyCountryToLocaleOption(country: ShopifyCountry): LocaleOption {
   // Map country code to locale
   const localeMap: Record<string, string> = {
+    GH: 'en-GH',
     US: 'en-US',
     GB: 'en-GB',
     DE: 'de-DE',
@@ -82,7 +84,7 @@ interface LocaleStore {
 export const useLocaleStore = create<LocaleStore>()(
   persist(
     (set, get) => ({
-      selectedLocale: DEMO_LOCALE_OPTIONS[2], // Default to EUR
+      selectedLocale: DEMO_LOCALE_OPTIONS[0], // Ghana brand: default to GHS
       availableLocales: DEMO_LOCALE_OPTIONS,
       isLoading: false,
       hasFetchedFromShopify: false,
@@ -132,9 +134,11 @@ export const useLocaleStore = create<LocaleStore>()(
     }),
     {
       name: 'locale-storage',
+      version: 1,
+      migrate: () => ({ selectedLocale: DEMO_LOCALE_OPTIONS[0] }),
       partialize: (state) => ({ 
         selectedLocale: state.selectedLocale,
-        hasFetchedFromShopify: state.hasFetchedFromShopify,
+
       }),
     }
   )

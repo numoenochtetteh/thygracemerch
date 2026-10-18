@@ -9,16 +9,8 @@ export default function LocaleSelector() {
   const { setLocale, availableLocales, fetchLocalesFromShopify, isLoading } = useLocaleStore();
 
   useEffect(() => {
-    const hasSelected = localStorage.getItem(LOCALE_SELECTED_KEY);
-    if (!hasSelected) {
-      // Fetch locales from Shopify if connected
-      if (!demoModeEnabled()) {
-        fetchLocalesFromShopify();
-      }
-      // Small delay for smoother UX
-      const timer = setTimeout(() => setIsVisible(true), 500);
-      return () => clearTimeout(timer);
-    }
+    // Ghana is the default; visitors can change currency from the menu/footer.
+    if (!demoModeEnabled()) fetchLocalesFromShopify();
   }, [fetchLocalesFromShopify]);
 
   const handleSelect = (option: LocaleOption) => {

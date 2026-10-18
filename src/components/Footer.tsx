@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import CurrencySettings from './CurrencySettings';
 import Logo from './Logo';
 export default function Footer() {
   return <footer className="page-padding border-t border-border py-8">
@@ -10,5 +11,6 @@ export default function Footer() {
       </nav>
       <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} ThyGraceMerch</p>
     </div>
+    <CurrencySettings />
   </footer>;
 }

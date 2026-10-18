@@ -120,7 +120,7 @@ export default function SearchPanel({ open, onClose }: SearchPanelProps) {
                       </div>
                       <p className="text-xs mb-1 line-clamp-1">{product.node.title}</p>
                       <p className="text-xs text-muted-foreground">
-                        {formatPrice(product.node.priceRange.minVariantPrice.amount)}
+                        {formatPrice(product.node.priceRange.minVariantPrice.amount, product.node.priceRange.minVariantPrice.currencyCode)}
                       </p>
                     </Link>
                   ))}

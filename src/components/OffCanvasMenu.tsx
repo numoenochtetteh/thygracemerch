@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useLocaleStore, LOCALE_OPTIONS } from '@/stores/localeStore';
+import { useLocaleStore } from '@/stores/localeStore';
 
 interface OffCanvasMenuProps {
   open: boolean;
@@ -32,7 +32,7 @@ export default function OffCanvasMenu({ open, onClose, onOpenSearch }: OffCanvas
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [localeOpen, setLocaleOpen] = useState(false);
-  const { selectedLocale, setLocale } = useLocaleStore();
+  const { selectedLocale, setLocale, availableLocales } = useLocaleStore();
 
   useEffect(() => {
     if (open) {
@@ -153,7 +153,7 @@ export default function OffCanvasMenu({ open, onClose, onOpenSearch }: OffCanvas
             
             {localeOpen && (
               <ul className="mt-3 space-y-2">
-                {LOCALE_OPTIONS.map((option) => (
+                {availableLocales.map((option) => (
                   <li key={option.countryCode}>
                     <button
                       onClick={() => {

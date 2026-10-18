@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import Layout from '@/components/Layout';
-import heroImage from '@/assets/hero-image.webp';
+const heroImage = '/thygracemerch-about.jpg';
 
 export default function AboutPage() {
   return (
@@ -13,11 +13,12 @@ export default function AboutPage() {
       <section className="min-h-[calc(100vh-3.5rem)]">
         <div className="grid grid-cols-1 md:grid-cols-2 min-h-[calc(100vh-3.5rem)]">
           {/* Image Column */}
-          <div className="h-64 md:h-auto">
+          <div className="bg-white flex items-start justify-center">
             <img 
               src={heroImage} 
-              alt="ThyGraceMerch brand imagery" 
-              className="w-full h-full object-cover"
+              alt="ThyGraceMerch King Jesus T-shirt against a blue brick wall" 
+              className="w-full h-auto object-contain"
+              width={1080} height={1350}
             />
           </div>
           

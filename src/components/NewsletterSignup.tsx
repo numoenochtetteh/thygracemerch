@@ -72,7 +72,7 @@ export default function NewsletterSignup() {
           <label className="sr-only" htmlFor="newsletter-country">Phone country code</label>
           <select id="newsletter-country" aria-label="Phone country code" value={country} onChange={event => setCountry(event.target.value)} disabled={submitting}>{countries.map(item => <option key={item.value} value={item.value}>{item.label}</option>)}</select>
           <label className="sr-only" htmlFor="newsletter-phone">Phone number (optional)</label>
-          <input id="newsletter-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel-national" maxLength={25} placeholder="Phone number (optional)" value={phone} onChange={event => setPhone(event.target.value)} disabled={submitting} />
+          <input id="newsletter-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel-national" maxLength={25} placeholder="Phone number" value={phone} onChange={event => setPhone(event.target.value)} disabled={submitting} />
         </div>
         <label className="newsletter-consent"><input type="checkbox" checked={consent} onChange={event => setConsent(event.target.checked)} disabled={submitting} /><span>I agree to receive collection updates. <Link to="/privacy">Privacy policy</Link></span></label>
         {error && <p className="newsletter-error" role="alert">{error}</p>}

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { paystackStorefrontUrl } from '@/config/storefront';
 import { Link } from 'react-router-dom';
 import { Loader2 } from 'lucide-react';
 import { useCartStore } from '@/stores/cartStore';
@@ -10,11 +11,11 @@ interface CartDrawerProps {
 }
 
 export default function CartDrawer({ open, onClose }: CartDrawerProps) {
-  const { items, isLoading, updateQuantity, removeItem, checkout, getTotalPrice, setOpen } = useCartStore();
+  const { items, isLoading, updateQuantity, removeItem, checkout, setOpen } = useCartStore();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
-  const { formatPrice } = useFormattedPrice();
+  const { formatPrice, formatTotal } = useFormattedPrice();
 
   useEffect(() => {
     if (open) {
@@ -56,7 +57,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
 
   if (!isVisible) return null;
 
-  const totalPrice = getTotalPrice();
+  const totalPrice = formatTotal(items);
 
   return (
     <div className="fixed inset-0 z-[100]">
@@ -123,7 +124,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                         <p className="text-xs text-muted-foreground mb-2">{item.variantTitle}</p>
                       )}
                       <p className="text-sm">
-                        {formatPrice(item.price.amount)}
+                        {formatPrice(item.price.amount, item.price.currencyCode)}
                       </p>
                       
                       <div className="flex items-center justify-between mt-3">
@@ -162,10 +163,10 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
             <div className="flex-shrink-0 border-t border-border p-4 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm">Subtotal</span>
-                <span className="text-sm">{formatPrice(totalPrice.toString())}</span>
+                <span className="text-sm">{totalPrice}</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                Shipping and taxes calculated at checkout.
+                {paystackStorefrontUrl ? 'Choose your items again on Paystack. This local cart does not transfer. Payment is in GHS.' : 'Delivery fees and taxes are shown at checkout.'}
               </p>
               <button
                 onClick={checkout}
@@ -178,7 +179,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                     Creating checkout...
                   </>
                 ) : (
-                  'Checkout'
+                  paystackStorefrontUrl ? 'Continue to Paystack store' : 'Checkout'
                 )}
               </button>
               <Link

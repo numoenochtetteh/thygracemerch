@@ -1,3 +1,4 @@
+import { paystackStorefrontUrl } from '@/config/storefront';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { toast } from 'sonner';
@@ -88,10 +89,16 @@ export const useCartStore = create<CartStore>()(
         const { items, setLoading } = get();
         if (items.length === 0) return;
 
+        if (paystackStorefrontUrl) {
+          // The hosted store has its own cart. Never imply that local cart items transfer.
+          window.location.assign(paystackStorefrontUrl);
+          return;
+        }
+
         // In demo mode, show a toast explaining checkout requires a connected store
         if (demoModeEnabled()) {
-          toast.info('Demo Mode', {
-            description: 'Connect a Shopify store to enable checkout.',
+          toast.info('Online checkout is not available yet', {
+            description: 'Please check back when our store opens.',
           });
           return;
         }
@@ -105,9 +112,10 @@ export const useCartStore = create<CartStore>()(
             }))
           );
           if (checkoutUrl) {
-            window.open(checkoutUrl, '_blank');
+            window.location.assign(checkoutUrl);
           }
         } catch (error) {
+          toast.error('Checkout couldn’t be opened. Please try again.');
           if (import.meta.env.DEV) {
             console.error('Failed to create checkout:', error);
           }

@@ -1,3 +1,4 @@
+import { paystackStorefrontUrl } from '@/config/storefront';
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
@@ -60,6 +61,7 @@ export default function ProductPage() {
   }, [handle]);
 
   const handleAddToCart = async () => {
+    if (paystackStorefrontUrl) { window.location.assign(paystackStorefrontUrl); return; }
     if (!product || !selectedVariant) return;
     
     const variant = product.variants.edges.find(v => v.node.id === selectedVariant);
@@ -201,7 +203,7 @@ export default function ProductPage() {
             <div className="h-full flex flex-col justify-center">
               <h1 className="text-sm mb-1">{product.title}</h1>
               <p className="text-sm text-muted-foreground mb-8">
-                {currentVariant && formatPrice(currentVariant.price.amount)}
+                {currentVariant && formatPrice(currentVariant.price.amount, currentVariant.price.currencyCode)}
               </p>
 
               <Accordion type="single" collapsible defaultValue="related" className="w-full">
@@ -247,7 +249,7 @@ export default function ProductPage() {
                             </div>
                             <p className="text-xs uppercase truncate">{edge.node.title}</p>
                             <p className="text-xs text-muted-foreground">
-                              {formatPrice(edge.node.priceRange.minVariantPrice.amount)}
+                              {formatPrice(edge.node.priceRange.minVariantPrice.amount, edge.node.priceRange.minVariantPrice.currencyCode)}
                             </p>
                           </Link>
                         ))}
@@ -372,6 +374,7 @@ export default function ProductPage() {
                 </div>
               )}
 
+              {paystackStorefrontUrl && <p className="text-xs text-muted-foreground normal-case">Select your item, size and delivery area on Paystack. Payment is in GHS.</p>}
               {/* Add to Cart - desktop only */}
               {!isMobile && (
                 <button
@@ -385,7 +388,7 @@ export default function ProductPage() {
                     'Sold Out'
                   ) : (
                     <>
-                      Add to Bag — {currentVariant && formatPrice(currentVariant.price.amount)}
+                      {paystackStorefrontUrl ? 'Shop on Paystack — ' : 'Add to Bag — '}{currentVariant && formatPrice(currentVariant.price.amount, currentVariant.price.currencyCode)}
                     </>
                   )}
                 </button>
@@ -438,7 +441,7 @@ export default function ProductPage() {
               'Sold Out'
             ) : (
               <>
-                Add to Bag — {currentVariant && formatPrice(currentVariant.price.amount)}
+                {paystackStorefrontUrl ? 'Shop on Paystack — ' : 'Add to Bag — '}{currentVariant && formatPrice(currentVariant.price.amount, currentVariant.price.currencyCode)}
               </>
             )}
           </button>
