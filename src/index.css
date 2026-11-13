@@ -207,3 +207,6 @@
 .animate-fade-out {
   animation: fade-out 0.3s ease-out;
 }
+
+html{scroll-behavior:smooth;scroll-padding-top:90px}body{background:#f7f7f8}main{min-height:40vh}main .page-padding{max-width:1700px;margin-left:auto;margin-right:auto}.tg-editorial-price{font:600 13px Arial,Helvetica,sans-serif;margin-top:5px;color:#555}footer{background:#fff}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}

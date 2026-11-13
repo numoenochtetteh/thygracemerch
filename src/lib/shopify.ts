@@ -1,14 +1,4 @@
 import { toast } from "sonner";
-import teeBlackFront from "@/assets/tee-black-front.png";
-import teeBlackBack from "@/assets/tee-black-back.png";
-import teeWhiteFront from "@/assets/tee-white-front.png";
-import teeWhiteBack from "@/assets/tee-white-back.png";
-import hoodieFront from "@/assets/front-hoodie.png";
-import hoodieBack from "@/assets/back-hoodie.png";
-import vintageFront from "@/assets/vintage-front.png";
-import vintageBack from "@/assets/vintage-back.png";
-import crewneckFront from "@/assets/crewneck-front.png";
-import crewneckBack from "@/assets/crewneck-back.png";
 
 const SHOPIFY_API_VERSION = "2025-07";
 
@@ -29,8 +19,8 @@ const SHOPIFY_CONNECTED = Boolean(SHOPIFY_STOREFRONT_URL && SHOPIFY_STOREFRONT_T
 type DemoProductNode = ShopifyProduct["node"];
 
 function demoProductNode(partial: Partial<DemoProductNode> & Pick<DemoProductNode, "id" | "title" | "handle">): DemoProductNode {
-  const currencyCode = "EUR";
-  const baseAmount = partial.priceRange?.minVariantPrice.amount ?? "95";
+  const currencyCode = partial.priceRange?.minVariantPrice.currencyCode ?? "GHS";
+  const baseAmount = partial.priceRange?.minVariantPrice.amount ?? "299";
 
   const sizeValues = ["S", "M", "L", "XL"];
   const colorValues = partial.options?.find((o) => o.name.toLowerCase() === "color")?.values ?? ["Black"];
@@ -76,257 +66,61 @@ function demoProductNode(partial: Partial<DemoProductNode> & Pick<DemoProductNod
   };
 }
 
+// Owner-selected Ghana-currency storefront prices. Shopify prices are not changed.
+// Do not represent these as prices synced with a payment provider until verified.
 const DEMO_PRODUCTS: ShopifyProduct[] = [
-  {
-    node: demoProductNode({
-      id: "demo-oversize-shirt",
-      title: "Oversize Shirt",
-      handle: "oversize-shirt",
-      description: "Heavyweight cotton tee. Clean fit, no noise.",
-      tags: ["new"],
-      images: {
-        edges: [
-          { node: { url: teeBlackFront, altText: "Oversize Shirt - black front" } },
-          { node: { url: teeBlackBack, altText: "Oversize Shirt - black back" } },
-          { node: { url: teeWhiteFront, altText: "Oversize Shirt - white front" } },
-          { node: { url: teeWhiteBack, altText: "Oversize Shirt - white back" } },
-        ],
-      },
-      options: [
-        { name: "Color", values: ["Black", "White"] },
-        { name: "Size", values: ["S", "M", "L", "XL"] },
-      ],
-      priceRange: { minVariantPrice: { amount: "55", currencyCode: "EUR" } },
-      relatedProducts: {
-        references: {
-          edges: [
-            {
-              node: {
-                id: "demo-oversize-hoodie",
-                title: "Oversize Hoodie",
-                handle: "oversize-hoodie",
-                priceRange: { minVariantPrice: { amount: "95", currencyCode: "EUR" } },
-                images: { edges: [{ node: { url: hoodieFront, altText: "Oversize Hoodie - front" } }] },
-              },
-            },
-            {
-              node: {
-                id: "demo-vintage-shirt",
-                title: "Vintage Shirt",
-                handle: "vintage-shirt",
-                priceRange: { minVariantPrice: { amount: "65", currencyCode: "EUR" } },
-                images: { edges: [{ node: { url: vintageFront, altText: "Vintage Shirt - front" } }] },
-              },
-            },
-          ],
-        },
-      },
-    }),
-  },
-  {
-    node: demoProductNode({
-      id: "demo-oversize-hoodie",
-      title: "Oversize Hoodie",
-      handle: "oversize-hoodie",
-      description: "Structured fleece hoodie. Oversized comfort.",
-      tags: [],
-      images: {
-        edges: [
-          { node: { url: hoodieFront, altText: "Oversize Hoodie - front" } },
-          { node: { url: hoodieBack, altText: "Oversize Hoodie - back" } },
-        ],
-      },
-      options: [
-        { name: "Color", values: ["Black"] },
-        { name: "Size", values: ["S", "M", "L", "XL"] },
-      ],
-      priceRange: { minVariantPrice: { amount: "95", currencyCode: "EUR" } },
-      relatedProducts: {
-        references: {
-          edges: [
-            {
-              node: {
-                id: "demo-crewneck",
-                title: "Crewneck",
-                handle: "crewneck",
-                priceRange: { minVariantPrice: { amount: "85", currencyCode: "EUR" } },
-                images: { edges: [{ node: { url: crewneckFront, altText: "Crewneck - front" } }] },
-              },
-            },
-            {
-              node: {
-                id: "demo-oversize-shirt",
-                title: "Oversize Shirt",
-                handle: "oversize-shirt",
-                priceRange: { minVariantPrice: { amount: "55", currencyCode: "EUR" } },
-                images: { edges: [{ node: { url: teeBlackFront, altText: "Oversize Shirt - black front" } }] },
-              },
-            },
-          ],
-        },
-      },
-    }),
-  },
-  {
-    node: demoProductNode({
-      id: "demo-vintage-shirt",
-      title: "Vintage Shirt",
-      handle: "vintage-shirt",
-      description: "Washed cotton tee with a lived-in feel. Relaxed vintage cut.",
-      tags: ["new"],
-      images: {
-        edges: [
-          { node: { url: vintageFront, altText: "Vintage Shirt - front" } },
-          { node: { url: vintageBack, altText: "Vintage Shirt - back" } },
-        ],
-      },
-      options: [
-        { name: "Color", values: ["Washed Black"] },
-        { name: "Size", values: ["S", "M", "L", "XL"] },
-      ],
-      priceRange: { minVariantPrice: { amount: "65", currencyCode: "EUR" } },
-      relatedProducts: {
-        references: {
-          edges: [
-            {
-              node: {
-                id: "demo-oversize-shirt",
-                title: "Oversize Shirt",
-                handle: "oversize-shirt",
-                priceRange: { minVariantPrice: { amount: "55", currencyCode: "EUR" } },
-                images: { edges: [{ node: { url: teeBlackFront, altText: "Oversize Shirt - black front" } }] },
-              },
-            },
-            {
-              node: {
-                id: "demo-crewneck",
-                title: "Crewneck",
-                handle: "crewneck",
-                priceRange: { minVariantPrice: { amount: "85", currencyCode: "EUR" } },
-                images: { edges: [{ node: { url: crewneckFront, altText: "Crewneck - front" } }] },
-              },
-            },
-          ],
-        },
-      },
-    }),
-  },
-  {
-    node: demoProductNode({
-      id: "demo-crewneck",
-      title: "Crewneck",
-      handle: "crewneck",
-      description: "Classic crewneck sweatshirt. Soft fleece, relaxed fit.",
-      tags: ["new"],
-      images: {
-        edges: [
-          { node: { url: crewneckFront, altText: "Crewneck - front" } },
-          { node: { url: crewneckBack, altText: "Crewneck - back" } },
-        ],
-      },
-      options: [
-        { name: "Color", values: ["Washed Black"] },
-        { name: "Size", values: ["S", "M", "L", "XL"] },
-      ],
-      priceRange: { minVariantPrice: { amount: "85", currencyCode: "EUR" } },
-      relatedProducts: {
-        references: {
-          edges: [
-            {
-              node: {
-                id: "demo-oversize-hoodie",
-                title: "Oversize Hoodie",
-                handle: "oversize-hoodie",
-                priceRange: { minVariantPrice: { amount: "95", currencyCode: "EUR" } },
-                images: { edges: [{ node: { url: hoodieFront, altText: "Oversize Hoodie - front" } }] },
-              },
-            },
-            {
-              node: {
-                id: "demo-vintage-shirt",
-                title: "Vintage Shirt",
-                handle: "vintage-shirt",
-                priceRange: { minVariantPrice: { amount: "65", currencyCode: "EUR" } },
-                images: { edges: [{ node: { url: vintageFront, altText: "Vintage Shirt - front" } }] },
-              },
-            },
-          ],
-        },
-      },
-    }),
-  },
+  { node: demoProductNode({
+    id: "demo-beauty-for-ashes-tee", title: "Beauty For Ashes Tee", handle: "beauty-for-ashes-tee",
+    description: "Faith-inspired black tee with the original Beauty For Ashes chest graphic.",
+    images: { edges: [{ node: { url: "/hero-merch/beauty.webp", altText: "Beauty For Ashes black tee, front" } }] },
+    options: [{ name: "Color", values: ["Black"] }, { name: "Size", values: ["S", "M", "L", "XL"] }],
+    priceRange: { minVariantPrice: { amount: "399", currencyCode: "GHS" } },
+  }) },
+  { node: demoProductNode({
+    id: "demo-jesus-is-lord-tee", title: "Jesus Is Lord Tee", handle: "jesus-is-lord-tee",
+    description: "Original LORD emblem tee with the faith message on the back.",
+    images: { edges: [{ node: { url: "/hero-merch/lord.webp", altText: "Jesus Is Lord black tee, front" } }, { node: { url: "/hero-merch/lord-back.webp", altText: "Jesus Is Lord black tee, back" } }] },
+    options: [{ name: "Color", values: ["Black"] }, { name: "Size", values: ["S", "M", "L", "XL"] }],
+    priceRange: { minVariantPrice: { amount: "449", currencyCode: "GHS" } },
+  }) },
+  { node: demoProductNode({
+    id: "demo-more-than-gold-tee", title: "More Than Gold Tee", handle: "more-than-gold-tee",
+    description: "Faith statement tee inspired by Acts 3:6, with its original gold lettering.",
+    images: { edges: [{ node: { url: "/hero-merch/gold.webp", altText: "More Than Gold black tee, back print" } }, { node: { url: "/hero-merch/gold-back.webp", altText: "More Than Gold black tee, front" } }] },
+    options: [{ name: "Color", values: ["Black"] }, { name: "Size", values: ["S", "M", "L", "XL"] }],
+    priceRange: { minVariantPrice: { amount: "599", currencyCode: "GHS" } },
+  }) },
+  { node: demoProductNode({
+    id: "demo-trusting-god-tee", title: "Trusting God Tee", handle: "trusting-god-tee",
+    description: "Black tee with the original orange flower artwork and a message of trusting God.",
+    images: { edges: [{ node: { url: "/hero-merch/god.webp", altText: "Trusting God black tee, front with orange floral GOD logo" } }, { node: { url: "/hero-merch/trusting-back.webp", altText: "Trusting God black tee, back with orange floral message" } }] },
+    options: [{ name: "Color", values: ["Black"] }, { name: "Size", values: ["S", "M", "L", "XL"] }],
+    priceRange: { minVariantPrice: { amount: "699", currencyCode: "GHS" } },
+  }) },
+  { node: demoProductNode({
+    id: "demo-thy-grace-cap", title: "THY-GRACE Cap", handle: "thy-grace-cap",
+    description: "White and green THY-GRACE cap featuring the original brand artwork.",
+    images: { edges: [{ node: { url: "/hero-merch/cap.webp", altText: "White and green THY-GRACE cap" } }] },
+    options: [{ name: "Color", values: ["White / Green"] }, { name: "Size", values: ["One Size"] }],
+    variants: { edges: [{ node: {
+      id: "demo-variant-thy-grace-cap-one-size", title: "White / Green / One Size",
+      price: { amount: "299", currencyCode: "GHS" }, availableForSale: true,
+      selectedOptions: [{ name: "Color", value: "White / Green" }, { name: "Size", value: "One Size" }],
+    } }] },
+    priceRange: { minVariantPrice: { amount: "299", currencyCode: "GHS" } },
+  }) },
 ];
 
 // Mapping of collection handles to product handles
 const DEMO_COLLECTION_PRODUCTS: Record<string, string[]> = {
-  frontpage: ["oversize-shirt", "oversize-hoodie", "vintage-shirt", "crewneck"],
-  "new-arrivals": ["oversize-shirt", "vintage-shirt", "crewneck"], // products with "new" tag
-  essentials: ["oversize-shirt", "oversize-hoodie", "vintage-shirt", "crewneck"],
-  "tops-tees": ["oversize-shirt", "vintage-shirt"],
-  "hoodies-sweats": ["oversize-hoodie", "crewneck"],
+  frontpage: ["beauty-for-ashes-tee", "jesus-is-lord-tee", "more-than-gold-tee", "trusting-god-tee"],
+  "new-arrivals": ["beauty-for-ashes-tee", "jesus-is-lord-tee", "more-than-gold-tee", "trusting-god-tee"],
 };
 
+// Kept for compatibility with existing data utilities; the standalone collections routes
+// now redirect to Shop, so there is no separate Collections page.
 const DEMO_COLLECTIONS: ShopifyCollection[] = [
-  {
-    node: {
-      id: "demo-collection-frontpage",
-      title: "Featured",
-      handle: "frontpage",
-      description: "Demo collection (no Shopify connected).",
-      image: {
-        url: hoodieFront,
-        altText: "Featured collection",
-      },
-    },
-  },
-  {
-    node: {
-      id: "demo-collection-new-arrivals",
-      title: "New Arrivals",
-      handle: "new-arrivals",
-      description: "Fresh drops and latest additions.",
-      image: {
-        url: crewneckFront,
-        altText: "New Arrivals collection",
-      },
-    },
-  },
-  {
-    node: {
-      id: "demo-collection-essentials",
-      title: "Essentials",
-      handle: "essentials",
-      description: "Everyday staples built to last.",
-      image: {
-        url: teeBlackFront,
-        altText: "Essentials collection",
-      },
-    },
-  },
-  {
-    node: {
-      id: "demo-collection-tops-tees",
-      title: "Tops & Tees",
-      handle: "tops-tees",
-      description: "Shirts, tees, and everything on top.",
-      image: {
-        url: vintageFront,
-        altText: "Tops & Tees collection",
-      },
-    },
-  },
-  {
-    node: {
-      id: "demo-collection-hoodies-sweats",
-      title: "Hoodies & Sweats",
-      handle: "hoodies-sweats",
-      description: "Warm layers for every season.",
-      image: {
-        url: hoodieFront,
-        altText: "Hoodies & Sweats collection",
-      },
-    },
-  },
+  { node: { id: "demo-collection-frontpage", title: "Shop", handle: "frontpage", description: "WEAR THE MESSAGE, Live the word.", image: { url: "/hero-merch/beauty.webp", altText: "Beauty For Ashes tee" } } },
 ];
 
 export function demoModeEnabled() {

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import './ProductImage.css';
 import { Link } from 'react-router-dom';
 import { ShopifyProduct } from '@/lib/shopify';
 import { Badge } from '@/components/ui/badge';
@@ -21,16 +22,17 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       to={`/product/${node.handle}`}
-      className="group block"
+      className="group block merchandise-card"
+      data-product-handle={node.handle}
       onMouseEnter={() => hasMultipleImages && setImageIndex(1)}
       onMouseLeave={() => setImageIndex(0)}
     >
-      <div className="aspect-square bg-secondary mb-3 overflow-hidden relative">
+      <div className="aspect-square bg-[#f2f2f1] mb-4 overflow-hidden relative">
         {images[imageIndex] ? (
           <img
             src={images[imageIndex].node.url}
             alt={images[imageIndex].node.altText || node.title}
-            className="w-full h-full object-cover"
+            className="merchandise-image w-full h-full object-contain"
             loading="lazy"
           />
         ) : (
@@ -52,8 +54,8 @@ export default function ProductCard({ product }: ProductCardProps) {
         )}
       </div>
       
-      <p className="text-xs mb-1 line-clamp-1 uppercase">{node.title}</p>
-      <p className="text-xs text-muted-foreground">
+      <p className="text-sm mb-2 line-clamp-2 font-semibold tracking-normal normal-case">{node.title}</p>
+      <p className="text-sm font-semibold text-[#171717]">
         {formatPrice(node.priceRange.minVariantPrice.amount, node.priceRange.minVariantPrice.currencyCode)}
       </p>
     </Link>

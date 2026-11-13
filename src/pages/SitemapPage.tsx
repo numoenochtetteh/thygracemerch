@@ -8,8 +8,6 @@ const SitemapPage = () => {
       title: "Shop",
       links: [
         { label: "All Products", href: "/products" },
-        { label: "Collections", href: "/collections" },
-        { label: "New Arrivals", href: "/collections/new-arrivals" },
       ],
     },
     {
@@ -22,7 +20,7 @@ const SitemapPage = () => {
     {
       title: "Company",
       links: [
-        { label: "About Us", href: "/about" },
+        { label: "Info", href: "/info" },
         { label: "Contact", href: "/contact" },
       ],
     },

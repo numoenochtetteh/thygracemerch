@@ -24,7 +24,7 @@ async function fetchRates(): Promise<RateTable> {
 export function useFormattedPrice() {
   const { selectedLocale } = useLocaleStore();
   const query = useQuery({ queryKey: ['exchange-rates-ghs'], queryFn: fetchRates, initialData: readCache, staleTime: 3600000, retry: 1, refetchOnWindowFocus: false });
-  const defaultSource = demoModeEnabled() ? 'EUR' : selectedLocale.currencyCode;
+  const defaultSource = demoModeEnabled() ? 'GHS' : selectedLocale.currencyCode;
   const convert = (amount: number, from: string, to: string): number | null => {
     if (from === to) return amount;
     const source = query.data?.rates[from], target = query.data?.rates[to];

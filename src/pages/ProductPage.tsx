@@ -33,7 +33,7 @@ export default function ProductPage() {
   const [adding, setAdding] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
-  
+
   const addItem = useCartStore(state => state.addItem);
   const setCartOpen = useCartStore(state => state.setOpen);
   const navigate = useNavigate();
@@ -63,12 +63,12 @@ export default function ProductPage() {
   const handleAddToCart = async () => {
     if (paystackStorefrontUrl) { window.location.assign(paystackStorefrontUrl); return; }
     if (!product || !selectedVariant) return;
-    
+
     const variant = product.variants.edges.find(v => v.node.id === selectedVariant);
     if (!variant) return;
 
     setAdding(true);
-    
+
     addItem({
       product: { node: product },
       variantId: variant.node.id,
@@ -81,7 +81,7 @@ export default function ProductPage() {
     toast.success('Added to cart', {
       position: 'top-center'
     });
-    
+
     setTimeout(() => {
       setAdding(false);
       setCartOpen(true);
@@ -126,13 +126,13 @@ export default function ProductPage() {
 
   // Filter images based on selected color (match color in altText)
   const selectedColor = getSelectedOptionValue('color');
-  const filteredImages = selectedColor 
+  const filteredImages = selectedColor
     ? allImages.filter(img => {
         const altText = img.node.altText?.toLowerCase() || '';
         return altText.includes(selectedColor.toLowerCase());
       })
     : allImages;
-  
+
   // If no images match the color filter, show all images
   const images = filteredImages.length > 0 ? filteredImages : allImages;
 
@@ -158,21 +158,21 @@ export default function ProductPage() {
   const handleOptionChange = (optionName: string, value: string) => {
     // Get current selected options
     const currentOptions = currentVariant?.selectedOptions || [];
-    
+
     // Build new options map with the changed option
     const newOptions: Record<string, string> = {};
     currentOptions.forEach(opt => {
       newOptions[opt.name.toLowerCase()] = opt.value;
     });
     newOptions[optionName.toLowerCase()] = value;
-    
+
     // Find variant that matches ALL selected options
     const matchingVariant = product.variants.edges.find(v =>
-      v.node.selectedOptions.every(opt => 
+      v.node.selectedOptions.every(opt =>
         newOptions[opt.name.toLowerCase()] === opt.value
       )
     );
-    
+
     if (matchingVariant) {
       setSelectedVariant(matchingVariant.node.id);
     }
@@ -197,14 +197,16 @@ export default function ProductPage() {
 
       <div className={`page-padding ${isMobile ? 'pb-32' : 'pb-12'}`}>
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr_1fr] gap-8 lg:gap-12">
-          
+
           {/* Left Column - Product Info & Accordions */}
           <div className="order-2 lg:order-1 lg:h-[calc(100vh-4rem)] lg:sticky lg:top-16">
             <div className="h-full flex flex-col justify-center">
               <h1 className="text-sm mb-1">{product.title}</h1>
               <p className="text-sm text-muted-foreground mb-8">
-                {currentVariant && formatPrice(currentVariant.price.amount, currentVariant.price.currencyCode)}
+                {currentVariant && (formatPrice(currentVariant.price.amount, currentVariant.price.currencyCode))}
               </p>
+
+
 
               <Accordion type="single" collapsible defaultValue="related" className="w-full">
                 <AccordionItem value="details" className="border-t border-border">
@@ -263,7 +265,7 @@ export default function ProductPage() {
                     Delivery and Returns
                   </AccordionTrigger>
                   <AccordionContent className="text-xs text-muted-foreground leading-relaxed pb-4">
-                    Free standard shipping on orders over $200. Express shipping available at checkout. Returns accepted within 14 days of delivery.
+                    Please review our Shipping & Returns page for the latest delivery and return information.
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
@@ -274,9 +276,9 @@ export default function ProductPage() {
           <div className="order-1 lg:order-2 space-y-2">
             {images.length > 0 ? (
               images.map((img, index) => (
-                <div 
-                  key={index} 
-                  className="aspect-square bg-secondary cursor-zoom-in"
+                <div
+                  key={index}
+                  className="aspect-square bg-[#f7f7f8] cursor-zoom-in"
                   onClick={() => {
                     setLightboxIndex(index);
                     setLightboxOpen(true);
@@ -285,7 +287,7 @@ export default function ProductPage() {
                   <img
                     src={img.node.url}
                     alt={img.node.altText || product.title}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-contain"
                   />
                 </div>
               ))
@@ -308,7 +310,7 @@ export default function ProductPage() {
           {/* Right Column - Variant Selection */}
           <div className="order-3 lg:h-[calc(100vh-4rem)] lg:sticky lg:top-16">
             <div className="h-full flex flex-col justify-center space-y-6">
-              
+
               {/* Color Selection */}
               {colorOption && colorOption.values.length > 1 && (
                 <div>
@@ -324,10 +326,10 @@ export default function ProductPage() {
                           key={color}
                           onClick={() => handleOptionChange('color', color)}
                           className={`w-10 h-10 border-2 transition-colors ${
-                            isSelected 
-                              ? 'border-foreground ring-2 ring-foreground ring-offset-2 ring-offset-background' 
-                              : isWhite 
-                                ? 'border-border hover:border-foreground' 
+                            isSelected
+                              ? 'border-foreground ring-2 ring-foreground ring-offset-2 ring-offset-background'
+                              : isWhite
+                                ? 'border-border hover:border-foreground'
                                 : 'border-transparent hover:border-foreground'
                           }`}
                           style={getColorStyle(color)}
@@ -357,10 +359,10 @@ export default function ProductPage() {
                           v.node.selectedOptions.some(o => o.name.toLowerCase() === 'size' && o.value === size)
                         );
                         const available = matchingVariant?.node.availableForSale ?? false;
-                        
+
                         return (
-                          <SelectItem 
-                            key={size} 
+                          <SelectItem
+                            key={size}
                             value={size}
                             disabled={!available}
                             className="text-xs"
@@ -415,10 +417,10 @@ export default function ProductPage() {
                     v.node.selectedOptions.some(o => o.name.toLowerCase() === 'size' && o.value === size)
                   );
                   const available = matchingVariant?.node.availableForSale ?? false;
-                  
+
                   return (
-                    <SelectItem 
-                      key={size} 
+                    <SelectItem
+                      key={size}
                       value={size}
                       disabled={!available}
                       className="text-xs"

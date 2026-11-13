@@ -1,0 +1,20 @@
+/* Match the visible garment sizes without cropping or modifying the source artwork. */
+[data-product-handle="more-than-gold-tee"] { --merch-scale: .89; }
+[data-product-handle="thy-grace-cap"] { --merch-scale: .68; }
+.thy-edit__image .merchandise-image,
+.merchandise-card .merchandise-image {
+  transform: scale(var(--merch-scale, 1));
+  transform-origin: center;
+  object-fit: contain;
+  transition: transform .3s ease;
+}
+@media (hover: hover) and (pointer: fine) {
+  .thy-edit__product:hover .merchandise-image,
+  .merchandise-card:hover .merchandise-image {
+    transform: scale(calc(var(--merch-scale, 1) * 1.025));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .thy-edit__image .merchandise-image,
+  .merchandise-card .merchandise-image { transition: none; }
+}

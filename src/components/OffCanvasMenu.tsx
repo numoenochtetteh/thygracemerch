@@ -11,9 +11,7 @@ interface OffCanvasMenuProps {
 
 const menuLinks = [
   { label: 'Shop', href: '/products' },
-  { label: 'Collections', href: '/collections' },
-  { label: 'New Arrivals', href: '/collections/new-arrivals' },
-  { label: 'About', href: '/about' },
+  { label: 'Info', href: '/info' },
   { label: 'Contact', href: '/contact' },
 ];
 

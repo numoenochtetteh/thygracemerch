@@ -6,10 +6,10 @@ import MannequinHero from '@/components/MannequinHero';
 
 export default function Index() {
   return (
-    <Layout>
+    <Layout headerVariant="original">
       <Helmet>
-        <title>ThyGraceMerch — Clothing & Everyday Essentials</title>
-        <meta name="description" content="Discover clothing and everyday essentials at ThyGraceMerch. Explore our collections and find your next favourite." />
+        <title>THY-GRACE — Wear the Message, Live the Word.</title>
+        <meta name="description" content="WEAR THE MESSAGE, Live the word. Discover original faith-inspired apparel and accessories from THY-GRACE." />
       </Helmet>
       <MannequinHero />
       <HomeCollection />
