@@ -6,9 +6,10 @@ import { Helmet } from 'react-helmet-async';
 import { ChevronLeft, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import Layout from '@/components/Layout';
-import { fetchProductByHandle, ShopifyProduct } from '@/lib/shopify';
+import { fetchProductByHandle, type ShopifyProduct } from '@/lib/shopify';
 import { useCartStore } from '@/stores/cartStore';
 import ImageLightbox from '@/components/ImageLightbox';
+import RelatedProducts from '@/components/RelatedProducts';
 import { useFormattedPrice } from '@/hooks/useFormattedPrice';
 import {
   Accordion,
@@ -29,7 +30,6 @@ export default function ProductPage() {
   const [product, setProduct] = useState<ShopifyProduct['node'] | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedVariant, setSelectedVariant] = useState<string | null>(null);
-  const [selectedImage, setSelectedImage] = useState(0);
   const [adding, setAdding] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
@@ -37,28 +37,34 @@ export default function ProductPage() {
   const addItem = useCartStore(state => state.addItem);
   const setCartOpen = useCartStore(state => state.setOpen);
   const navigate = useNavigate();
-  const { formatPrice } = useFormattedPrice();
+  const { formatPrice, selectedLocale } = useFormattedPrice();
   const isMobile = useIsMobile();
 
   useEffect(() => {
+    let active = true;
+    setLoading(true);
+    setProduct(null);
+    setSelectedVariant(null);
+    setLightboxOpen(false);
+    setLightboxIndex(0);
+    setAdding(false);
+
     async function loadProduct() {
-      if (!handle) return;
+      if (!handle) { setLoading(false); return; }
       try {
-        const data = await fetchProductByHandle(handle);
+        const data = await fetchProductByHandle(handle, selectedLocale.countryCode);
+        if (!active) return;
         setProduct(data);
-        if (data?.variants.edges[0]) {
-          setSelectedVariant(data.variants.edges[0].node.id);
-        }
+        setSelectedVariant(data?.variants.edges[0]?.node.id ?? null);
       } catch (error) {
-        if (import.meta.env.DEV) {
-          console.error('Failed to load product:', error);
-        }
+        if (active && import.meta.env.DEV) console.error('Failed to load product:', error);
       } finally {
-        setLoading(false);
+        if (active) setLoading(false);
       }
     }
-    loadProduct();
-  }, [handle]);
+    void loadProduct();
+    return () => { active = false; };
+  }, [handle, selectedLocale.countryCode]);
 
   const handleAddToCart = async () => {
     if (paystackStorefrontUrl) { window.location.assign(paystackStorefrontUrl); return; }
@@ -399,6 +405,8 @@ export default function ProductPage() {
           </div>
         </div>
       </div>
+
+      <RelatedProducts productId={product.id} currentHandle={product.handle} />
 
       {/* Mobile fixed bottom bar */}
       {isMobile && (

@@ -283,14 +283,6 @@
 .thy-edit__count{font-size:11px;min-width:32px;color:#666;text-align:center;font-variant-numeric:tabular-nums}
 @media(max-width:767px){
  .thy-edit{scroll-margin-top:100px}
- /* Compact signup only on phones; keep 16px input text to avoid iOS zoom. */
- .newsletter-content{max-width:240px}
- .newsletter-content form{gap:10px}
- .newsletter-content input[type=email],.newsletter-phone{min-height:38px}
- .newsletter-content input[type=email],.newsletter-phone input{padding:7px 10px;font-size:16px}
- .newsletter-phone select{width:92px;padding:0 7px;font-size:12px}
- .newsletter-submit{min-height:42px;font-size:15px;border-radius:10px}
- .newsletter-consent{gap:8px;font-size:11px}
  .thy-edit__controls{gap:9px}
  .thy-edit__positions button{width:27px}
 }
