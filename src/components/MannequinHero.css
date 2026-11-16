@@ -30,3 +30,9 @@
 @media(max-width:1200px){.tg-editorial-hero__headline{max-width:76vw}.tg-editorial-hero__headline h1{font-size:clamp(29px,3.5vw,45px);white-space:nowrap}}
 @media(max-width:640px){.tg-editorial-hero__headline{max-width:100%}.tg-editorial-hero__headline h1{font-size:clamp(22px,6.1vw,35px);letter-spacing:-.055em;white-space:nowrap}}
 @media(max-width:375px){.tg-editorial-hero__headline h1{font-size:clamp(21px,6.15vw,24px)}}
+
+/* Brand accents and deliberate, usable collection links. */
+.tg-editorial-hero .tg-editorial-hero__accent{color:#285c39;font-style:normal}
+.tg-editorial-hero__scroll{min-height:44px;gap:12px}
+.tg-editorial-hero__secondary:hover,.tg-editorial-hero__scroll:hover{color:#285c39}
+.tg-editorial-hero__buttons .action-link:active{transform:translateY(1px)}

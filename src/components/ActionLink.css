@@ -1,0 +1,19 @@
+.action-link{display:inline-flex;align-items:center;gap:12px;text-decoration:none}
+.action-link__label{display:block;position:relative;height:1.4em;line-height:1.4;overflow:hidden}
+.action-link__label>span{display:block;transition:transform .32s cubic-bezier(.22,1,.36,1)}
+.action-link__arrow{display:inline-block;position:relative;flex:none;width:18px;height:18px;overflow:hidden}
+.action-link .action-link__arrow svg{position:absolute;inset:0;width:18px;height:18px;transition:transform .32s cubic-bezier(.22,1,.36,1)}
+.action-link__arrow svg:last-child{transform:translateX(-125%)}
+.action-link--down .action-link__arrow svg:last-child{transform:translate(-125%,-125%)}
+.action-link:focus-visible{outline:2px solid #285c39;outline-offset:5px}
+.action-link:is(:hover,:focus-visible) .action-link__label>span{transform:translateY(-100%)}
+.action-link:is(:hover,:focus-visible) .action-link__arrow svg:first-child{transform:translateX(125%)}
+.action-link:is(:hover,:focus-visible) .action-link__arrow svg:last-child{transform:translateX(0)}
+.action-link--down:is(:hover,:focus-visible) .action-link__arrow svg:first-child{transform:translate(125%,125%)}
+.action-link--down:is(:hover,:focus-visible) .action-link__arrow svg:last-child{transform:translate(0,0)}
+@media(prefers-reduced-motion:reduce){
+ .action-link__label>span,.action-link .action-link__arrow svg{transition:none}
+ .action-link:is(:hover,:focus-visible) .action-link__label>span{transform:none}
+ .action-link .action-link__arrow svg:last-child{display:none}
+ .action-link:is(:hover,:focus-visible) .action-link__arrow svg:first-child{transform:none}
+}

@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { fetchProducts, type ShopifyProduct } from '@/lib/shopify';
 import { useFormattedPrice } from '@/hooks/useFormattedPrice';
+import ActionLink from './ActionLink';
 import './HomeSections.css';
 import './ProductImage.css';
 
@@ -10,9 +11,9 @@ import './ProductImage.css';
 const approvedHandles = [
   'beauty-for-ashes-tee',
   'jesus-is-lord-tee',
-  'more-than-gold-tee',
-  'trusting-god-tee',
   'thy-grace-cap',
+  'trusting-god-tee',
+  'more-than-gold-tee',
 ];
 
 export default function HomeCollection() {
@@ -21,7 +22,11 @@ export default function HomeCollection() {
   const [error, setError] = useState(false);
   const [position, setPosition] = useState(0);
   const [maxPosition, setMaxPosition] = useState(0);
+  const [canPrevious, setCanPrevious] = useState(false);
+  const [canNext, setCanNext] = useState(false);
   const track = useRef<HTMLDivElement>(null);
+  const requestedPosition = useRef<number | null>(null);
+  const settleTimer = useRef<ReturnType<typeof setTimeout>>();
   const { selectedLocale, formatPrice } = useFormattedPrice();
 
   useEffect(() => {
@@ -47,10 +52,14 @@ export default function HomeCollection() {
     if (!el) return;
     const first = el.querySelector<HTMLElement>('.thy-edit__product');
     if (!first) return;
-    const gap = parseFloat(getComputedStyle(el).columnGap || '0');
+    const gap = (parseFloat(getComputedStyle(el).columnGap) || 0);
     const step = first.getBoundingClientRect().width + gap;
     const maximum = Math.max(0, Math.ceil((el.scrollWidth - el.clientWidth - 1) / step));
     setMaxPosition(maximum);
+    setCanPrevious(el.scrollLeft > 1);
+    setCanNext(el.scrollLeft < el.scrollWidth - el.clientWidth - 1);
+    clearTimeout(settleTimer.current);
+    settleTimer.current = setTimeout(() => { requestedPosition.current = null; }, 180);
     setPosition(Math.min(maximum, Math.max(0, Math.round(el.scrollLeft / step))));
   }, []);
 
@@ -64,25 +73,32 @@ export default function HomeCollection() {
     syncPosition();
     return () => {
       observer.disconnect();
+      clearTimeout(settleTimer.current);
+      requestedPosition.current = null;
       window.removeEventListener('resize', onResize);
     };
   }, [products.length, syncPosition]);
 
-  const move = (direction: -1 | 1) => {
+  const goTo = (requested: number) => {
     const el = track.current;
-    if (!el) return;
-    const item = el.querySelector<HTMLElement>('.thy-edit__product');
-    if (!item) return;
-    const gap = parseFloat(getComputedStyle(el).columnGap || '0');
+    const item = el?.querySelector<HTMLElement>('.thy-edit__product');
+    if (!el || !item) return;
+    const gap = (parseFloat(getComputedStyle(el).columnGap) || 0);
     const step = item.getBoundingClientRect().width + gap;
-    el.scrollBy({ left: direction * step, behavior: 'smooth' });
+    const next = Math.min(maxPosition, Math.max(0, requested));
+    requestedPosition.current = next;
+    el.scrollTo({
+      left: Math.min(el.scrollWidth - el.clientWidth, next * step),
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+    });
   };
+  const move = (direction: -1 | 1) => goTo((requestedPosition.current ?? position) + direction);
 
   return (
     <section id="thy-grace-edit" className="thy-edit" aria-labelledby="thy-edit-title">
       <div id="home-collection-title" className="thy-edit__heading">
-        <h2 id="thy-edit-title"><span aria-hidden="true">▪</span> Shop</h2>
-        <Link to="/products">Explore All <ArrowRight size={16} aria-hidden="true" /></Link>
+        <h2 id="thy-edit-title"><span className="thy-edit__shop-dot" aria-hidden="true" /> Shop</h2>
+        <ActionLink to="/products">Explore All</ActionLink>
       </div>
 
       {loading ? (
@@ -96,6 +112,7 @@ export default function HomeCollection() {
       ) : (
         <>
           <div
+            id="thy-edit-track"
             className="thy-edit__track"
             ref={track}
             role="region"
@@ -106,6 +123,8 @@ export default function HomeCollection() {
             onKeyDown={(event) => {
               if (event.key === 'ArrowRight') { event.preventDefault(); move(1); }
               if (event.key === 'ArrowLeft') { event.preventDefault(); move(-1); }
+              if (event.key === 'Home') { event.preventDefault(); goTo(0); }
+              if (event.key === 'End') { event.preventDefault(); goTo(maxPosition); }
             }}
           >
             {products.map(({ node }) => (
@@ -133,12 +152,19 @@ export default function HomeCollection() {
             ))}
           </div>
           <div className="thy-edit__controls" aria-label="Carousel navigation">
-            <button type="button" onClick={() => move(-1)} disabled={position === 0} aria-label="Previous product"><ChevronLeft size={19} /></button>
-            <span className="thy-edit__indicator" aria-label={`Carousel position ${position + 1} of ${maxPosition + 1}`}>
-              <span className="thy-edit__indicator-current" />
-              <span className="thy-edit__indicator-end" />
-            </span>
-            <button type="button" onClick={() => move(1)} disabled={position >= maxPosition} aria-label="Next product"><ChevronRight size={19} /></button>
+            <button className="thy-edit__arrow" type="button" onClick={() => move(-1)} disabled={!canPrevious} aria-label="Previous product" aria-controls="thy-edit-track"><ChevronLeft size={19} /></button>
+            <div className="thy-edit__positions" aria-label="Choose carousel position">
+              {Array.from({ length: maxPosition + 1 }, (_, index) => <button
+                key={index}
+                type="button"
+                onClick={() => goTo(index)}
+                aria-label={`Go to carousel position ${index + 1}`}
+                aria-current={position === index ? 'step' : undefined}
+                aria-controls="thy-edit-track"
+              ><span /></button>)}
+            </div>
+            <span className="thy-edit__count" aria-live="polite" aria-atomic="true">{position + 1} / {maxPosition + 1}</span>
+            <button className="thy-edit__arrow" type="button" onClick={() => move(1)} disabled={!canNext} aria-label="Next product" aria-controls="thy-edit-track"><ChevronRight size={19} /></button>
           </div>
         </>
       )}
