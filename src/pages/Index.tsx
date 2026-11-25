@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import Layout from '@/components/Layout';
 import HomeCollection from '@/components/HomeCollection';
 import NewsletterSignup from '@/components/NewsletterSignup';
-import MannequinHero from '@/components/MannequinHero';
+import CampaignPhotoHero from '@/components/CampaignPhotoHero';
 
 export default function Index() {
   return (
@@ -11,7 +11,7 @@ export default function Index() {
         <title>THY-GRACE — Wear the Message, Live the Word.</title>
         <meta name="description" content="WEAR THE MESSAGE, Live the word. Discover original faith-inspired apparel and accessories from THY-GRACE." />
       </Helmet>
-      <MannequinHero />
+      <CampaignPhotoHero />
       <HomeCollection />
       <NewsletterSignup />
     </Layout>

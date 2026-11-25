@@ -166,7 +166,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                 <span className="text-sm">{totalPrice}</span>
               </div>
               <p className="text-xs text-muted-foreground">
-                {paystackStorefrontUrl ? 'Choose your items again on Paystack. This local cart does not transfer. Payment is in GHS.' : 'Delivery fees and taxes are shown at checkout.'}
+                {paystackStorefrontUrl ? 'Choose your items again on Paystack. This local cart does not transfer. Payment is in GHS.' : 'Delivery charges vary by destination and are confirmed before payment. Delivery takes 48–72 hours after order confirmation.'}
               </p>
               <button
                 onClick={checkout}

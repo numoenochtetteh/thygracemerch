@@ -136,7 +136,7 @@ export default function CartPage() {
                 </button>
 
                 <p className="text-xs text-muted-foreground text-center mt-4">
-                  {paystackStorefrontUrl ? 'Choose your items again on Paystack. This local cart does not transfer. Payment is in GHS.' : 'Taxes calculated at checkout'}
+                  {paystackStorefrontUrl ? 'Choose your items again on Paystack. This local cart does not transfer. Payment is in GHS.' : 'Delivery charges vary by destination. Delivery takes 48–72 hours after order confirmation.'}
                 </p>
               </div>
 

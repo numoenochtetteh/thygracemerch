@@ -1,0 +1,26 @@
+.campaign-photo{position:relative;isolation:isolate;aspect-ratio:2048/1143;max-height:960px;min-height:540px;background:#e0e5db;color:#171717;overflow:hidden}
+.campaign-photo__picture{position:absolute;inset:0;z-index:-1}
+.campaign-photo__picture img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}
+.campaign-photo__content{height:100%;min-height:inherit;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;width:47%;padding:clamp(24px,5vw,92px);padding-right:12px}
+.campaign-photo__eyebrow{font-size:clamp(8px,.7vw,12px);line-height:1.6;font-weight:600;letter-spacing:.1em;color:#285c39;margin:0 0 22px}
+.campaign-photo h1{font-family:Arial,Helvetica,sans-serif;font-size:clamp(24px,3.15vw,62px);font-weight:800;line-height:1.08;letter-spacing:-.055em;margin:0;text-transform:none;white-space:nowrap}
+.campaign-photo h1 span{color:#285c39}
+.campaign-photo__actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.campaign-photo__actions a{min-height:48px;padding:12px 20px;border:1px solid #285c39;font:600 12px/1.4 Arial,Helvetica,sans-serif;transition:background-color .2s,color .2s}
+.campaign-photo__primary{background:#285c39;color:#fff}
+.campaign-photo__primary:hover{background:#1c482a}
+.campaign-photo__secondary{color:#285c39;background:rgba(255,255,255,.4)}
+.campaign-photo__secondary:hover{background:#fff}
+@media(max-width:1023px){.campaign-photo{min-height:0;max-height:none}.campaign-photo__content{position:relative;padding:30px 22px;min-height:410px}.campaign-photo h1{font-size:clamp(24px,3.2vw,36px)}.campaign-photo__actions{gap:8px;margin-top:20px}.campaign-photo__actions a{padding:10px 14px}}
+.campaign-photo__shop-link{display:none}
+@media(max-width:767px){
+ /* Phone-only campaign treatment: one CTA in the open wall above the models. */
+ .campaign-photo{aspect-ratio:1143/2048;background:#e0e5db}
+ .campaign-photo__picture{display:block;position:absolute;inset:0;z-index:0}
+ .campaign-photo__picture img{width:100%;height:100%;object-fit:contain}
+ .campaign-photo__content{display:none}
+ .campaign-photo__shop-link{position:absolute;z-index:1;top:17%;left:50%;transform:translateX(-50%);display:inline-flex;align-items:center;justify-content:center;min-width:116px;min-height:44px;padding:11px 24px;border:1px solid #285c39;border-radius:999px;background:#285c39;color:#fff;font:500 13px/1.4 Arial,Helvetica,sans-serif;text-decoration:none;transition:background-color .25s ease,box-shadow .25s ease}
+ .campaign-photo__shop-link:hover{background:#1c482a;box-shadow:0 3px 12px rgba(0,0,0,.12)}
+ .campaign-photo__shop-link:focus-visible{outline:2px solid #fff;outline-offset:4px;box-shadow:0 0 0 6px #285c39}
+}
+@media(prefers-reduced-motion:reduce){.campaign-photo__actions a,.campaign-photo__shop-link{transition:none}}

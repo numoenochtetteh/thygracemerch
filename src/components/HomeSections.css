@@ -290,3 +290,6 @@
  .thy-edit__shop-dot:after{animation:none;display:none}
  .thy-edit__controls .thy-edit__arrow,.thy-edit__arrow svg,.thy-edit__positions button span{transition:none}
 }
+
+.thy-edit__availability{font-size:11px;color:#285c39;margin:0 0 5px}
+.thy-edit__missing{padding:20px;text-align:center;line-height:1.6}

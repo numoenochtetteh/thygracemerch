@@ -5,8 +5,8 @@ const support = 'support@thygrace.com';
 const sections = [
   {
     id: 'delivery', title: 'Delivery', paragraphs: [
-      'We deliver globally. Orders within Ghana are typically delivered within 3–5 working days, while international deliveries take 7–12 working days.',
-      'After checkout, you will receive an order confirmation via email or SMS. To ensure a smooth delivery, our courier partner or dispatch rider will contact you on the phone number provided prior to arrival.',
+      'Thygracemerch books and arranges delivery for your order. Deliveries are completed within 48–72 hours of order confirmation.',
+      'Delivery charges vary by destination and will be confirmed before payment. Please provide a complete delivery address and a valid phone number so our courier or dispatch rider can contact you.',
     ],
   },
   {

@@ -22,7 +22,7 @@ function demoProductNode(partial: Partial<DemoProductNode> & Pick<DemoProductNod
   const currencyCode = partial.priceRange?.minVariantPrice.currencyCode ?? "GHS";
   const baseAmount = partial.priceRange?.minVariantPrice.amount ?? "299";
 
-  const sizeValues = ["S", "M", "L", "XL"];
+  const sizeValues = partial.options?.find(o => o.name.toLowerCase() === "size")?.values ?? ["M", "L", "XL", "2XL", "3XL"];
   const colorValues = partial.options?.find((o) => o.name.toLowerCase() === "color")?.values ?? ["Black"];
 
   const variants = partial.variants?.edges?.length
@@ -34,7 +34,7 @@ function demoProductNode(partial: Partial<DemoProductNode> & Pick<DemoProductNod
               id: `demo-variant-${partial.id}-${color.toLowerCase()}-${size}`,
               title: `${color} / ${size}`,
               price: { amount: baseAmount, currencyCode },
-              availableForSale: true,
+              availableForSale: partial.availableForSale ?? true,
               selectedOptions: [
                 { name: "Color", value: color },
                 { name: "Size", value: size },
@@ -66,55 +66,76 @@ function demoProductNode(partial: Partial<DemoProductNode> & Pick<DemoProductNod
   };
 }
 
-// Owner-selected Ghana-currency storefront prices. Shopify prices are not changed.
-// Do not represent these as prices synced with a payment provider until verified.
+// Client-confirmed catalogue, 23 November 2026. Quantities and Paystack setup remain pending.
+// These local prices do not overwrite an externally connected Shopify catalogue.
+const teeSizes = ["M", "L", "XL", "2XL", "3XL"];
+const teeOptions = [{ name: "Color", values: ["Black"] }, { name: "Size", values: teeSizes }];
+const image = (url: string, altText: string) => ({ node: { url, altText } });
 const DEMO_PRODUCTS: ShopifyProduct[] = [
   { node: demoProductNode({
-    id: "demo-beauty-for-ashes-tee", title: "Beauty For Ashes Tee", handle: "beauty-for-ashes-tee",
-    description: "Faith-inspired black tee with the original Beauty For Ashes chest graphic.",
-    images: { edges: [{ node: { url: "/hero-merch/beauty.webp", altText: "Beauty For Ashes black tee, front" } }] },
-    options: [{ name: "Color", values: ["Black"] }, { name: "Size", values: ["S", "M", "L", "XL"] }],
-    priceRange: { minVariantPrice: { amount: "399", currencyCode: "GHS" } },
+    id: "demo-beauty-for-ashes-tee", title: "Beauty for Ashes Tee", handle: "beauty-for-ashes-tee",
+    description: "Faith-inspired black tee with the original Beauty for Ashes chest graphic. Available in M to 3XL.",
+    images: { edges: [image("/hero-merch/beauty.webp", "Beauty for Ashes Tee, front")] },
+    options: teeOptions, priceRange: { minVariantPrice: { amount: "300", currencyCode: "GHS" } },
   }) },
   { node: demoProductNode({
-    id: "demo-jesus-is-lord-tee", title: "Jesus Is Lord Tee", handle: "jesus-is-lord-tee",
-    description: "Original LORD emblem tee with the faith message on the back.",
-    images: { edges: [{ node: { url: "/hero-merch/lord.webp", altText: "Jesus Is Lord black tee, front" } }, { node: { url: "/hero-merch/lord-back.webp", altText: "Jesus Is Lord black tee, back" } }] },
-    options: [{ name: "Color", values: ["Black"] }, { name: "Size", values: ["S", "M", "L", "XL"] }],
-    priceRange: { minVariantPrice: { amount: "449", currencyCode: "GHS" } },
+    id: "demo-jesus-is-lord-tee", title: "Jesus is Lord Tee", handle: "jesus-is-lord-tee",
+    description: "Original LORD emblem tee. Available in M to 3XL.",
+    images: { edges: [image("/hero-merch/lord.webp", "Jesus is Lord Tee, black front"), image("/hero-merch/lord-back.webp", "Jesus is Lord Tee, black back")] },
+    options: teeOptions, priceRange: { minVariantPrice: { amount: "300", currencyCode: "GHS" } },
   }) },
   { node: demoProductNode({
-    id: "demo-more-than-gold-tee", title: "More Than Gold Tee", handle: "more-than-gold-tee",
-    description: "Faith statement tee inspired by Acts 3:6, with its original gold lettering.",
-    images: { edges: [{ node: { url: "/hero-merch/gold.webp", altText: "More Than Gold black tee, back print" } }, { node: { url: "/hero-merch/gold-back.webp", altText: "More Than Gold black tee, front" } }] },
-    options: [{ name: "Color", values: ["Black"] }, { name: "Size", values: ["S", "M", "L", "XL"] }],
-    priceRange: { minVariantPrice: { amount: "599", currencyCode: "GHS" } },
-  }) },
-  { node: demoProductNode({
-    id: "demo-trusting-god-tee", title: "Trusting God Tee", handle: "trusting-god-tee",
-    description: "Black tee with the original orange flower artwork and a message of trusting God.",
-    images: { edges: [{ node: { url: "/hero-merch/god.webp", altText: "Trusting God black tee, front with orange floral GOD logo" } }, { node: { url: "/hero-merch/trusting-back.webp", altText: "Trusting God black tee, back with orange floral message" } }] },
-    options: [{ name: "Color", values: ["Black"] }, { name: "Size", values: ["S", "M", "L", "XL"] }],
-    priceRange: { minVariantPrice: { amount: "699", currencyCode: "GHS" } },
-  }) },
-  { node: demoProductNode({
-    id: "demo-thy-grace-cap", title: "THY-GRACE Cap", handle: "thy-grace-cap",
+    id: "demo-thy-grace-cap", title: "Thy-grace Cap", handle: "thy-grace-cap",
     description: "White and green THY-GRACE cap featuring the original brand artwork.",
-    images: { edges: [{ node: { url: "/hero-merch/cap.webp", altText: "White and green THY-GRACE cap" } }] },
+    images: { edges: [image("/hero-merch/cap.webp", "White and green Thy-grace Cap")] },
     options: [{ name: "Color", values: ["White / Green"] }, { name: "Size", values: ["One Size"] }],
     variants: { edges: [{ node: {
       id: "demo-variant-thy-grace-cap-one-size", title: "White / Green / One Size",
-      price: { amount: "299", currencyCode: "GHS" }, availableForSale: true,
+      price: { amount: "150", currencyCode: "GHS" }, availableForSale: true,
       selectedOptions: [{ name: "Color", value: "White / Green" }, { name: "Size", value: "One Size" }],
     } }] },
-    priceRange: { minVariantPrice: { amount: "299", currencyCode: "GHS" } },
+    priceRange: { minVariantPrice: { amount: "150", currencyCode: "GHS" } },
+  }) },
+  { node: demoProductNode({
+    id: "demo-trusting-god-tee", title: "Trusting God Tee", handle: "trusting-god-tee",
+    description: "Black tee with the original orange flower artwork and a message of trusting God. Available in M to 3XL.",
+    images: { edges: [image("/hero-merch/god.webp", "Trusting God Tee, black front"), image("/hero-merch/trusting-back.webp", "Trusting God Tee, black back")] },
+    options: teeOptions, priceRange: { minVariantPrice: { amount: "400", currencyCode: "GHS" } },
+  }) },
+  { node: demoProductNode({
+    id: "demo-king-jesus-tee", title: "King Jesus Tee", handle: "king-jesus-tee",
+    description: "King Jesus Tee featuring the original crown and King Jesus artwork. Available in M to 3XL.",
+    images: { edges: [image("/hero-merch/king-jesus-back.webp", "King Jesus Tee, black back"), image("/hero-merch/king-jesus-front.webp", "King Jesus Tee, black front")] },
+    options: teeOptions, priceRange: { minVariantPrice: { amount: "400", currencyCode: "GHS" } },
+  }) },
+  { node: demoProductNode({
+    id: "demo-word-piece", title: "WORD Piece", handle: "word-piece",
+    description: "WORD Piece tee. Available in M to 3XL. Product photography will be added soon.",
+    images: { edges: [] }, tags: ["photo-pending"], options: teeOptions,
+    priceRange: { minVariantPrice: { amount: "300", currencyCode: "GHS" } },
+  }) },
+  { node: demoProductNode({
+    id: "demo-more-than-gold-tee", title: "More than GOLD Tee", handle: "more-than-gold-tee",
+    description: "Faith statement tee inspired by Acts 3:6, with its original gold lettering. Available in M to 3XL.",
+    images: { edges: [image("/hero-merch/gold.webp", "More than GOLD Tee, black back"), image("/hero-merch/gold-back.webp", "More than GOLD Tee, black front")] },
+    options: teeOptions, priceRange: { minVariantPrice: { amount: "500", currencyCode: "GHS" } },
+  }) },
+  { node: demoProductNode({
+    id: "demo-purpose-life-tee", title: "Purpose Life Tee", handle: "purpose-life-tee",
+    description: "Our next drop: Purpose Life Tee. Coming soon in M to 3XL. Back photography will be added soon.",
+    images: { edges: [] }, tags: ["coming-soon", "photo-pending"], availableForSale: false, options: teeOptions,
+    priceRange: { minVariantPrice: { amount: "400", currencyCode: "GHS" } },
   }) },
 ];
 
+export function getLocalProductByHandle(handle: string): ShopifyProduct["node"] | null {
+  return DEMO_PRODUCTS.find(product => product.node.handle === handle)?.node ?? null;
+}
+
 // Mapping of collection handles to product handles
 const DEMO_COLLECTION_PRODUCTS: Record<string, string[]> = {
-  frontpage: ["beauty-for-ashes-tee", "jesus-is-lord-tee", "more-than-gold-tee", "trusting-god-tee"],
-  "new-arrivals": ["beauty-for-ashes-tee", "jesus-is-lord-tee", "more-than-gold-tee", "trusting-god-tee"],
+  frontpage: DEMO_PRODUCTS.map(product => product.node.handle),
+  "new-arrivals": ["purpose-life-tee"],
 };
 
 // Kept for compatibility with existing data utilities; the standalone collections routes
@@ -589,7 +610,7 @@ export async function fetchProducts(first: number = 20, query?: string, country?
 
 export async function fetchProductByHandle(handle: string, country?: string): Promise<ShopifyProduct['node'] | null> {
   if (demoModeEnabled()) {
-    return DEMO_PRODUCTS.find((p) => p.node.handle === handle)?.node ?? null;
+    return getLocalProductByHandle(handle);
   }
   const countryCode = country || currentCountryCode;
   const data = await storefrontApiRequest(PRODUCT_BY_HANDLE_QUERY, { handle, country: countryCode });

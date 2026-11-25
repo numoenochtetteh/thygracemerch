@@ -17,6 +17,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const { formatPrice } = useFormattedPrice();
   
   // Check if product has "new" tag (case-insensitive)
+  const isComingSoon = node.tags?.includes('coming-soon');
   const isNew = node.tags?.some(tag => tag.toLowerCase() === 'new');
 
   return (
@@ -37,7 +38,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">
-            No image
+            Photo coming soon
           </div>
         )}
         
@@ -49,7 +50,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         
         {!node.availableForSale && (
           <div className="absolute bottom-0 left-0 right-0 bg-background/90 py-2 text-center">
-            <span className="text-xs text-muted-foreground">Sold out</span>
+            <span className="text-xs text-muted-foreground">{isComingSoon ? 'Coming soon' : 'Sold out'}</span>
           </div>
         )}
       </div>

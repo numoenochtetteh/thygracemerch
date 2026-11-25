@@ -31,7 +31,7 @@ const TermsPage = () => {
             <section>
               <h2 className="text-foreground mb-3">3. Pricing</h2>
               <p>
-                All prices are displayed in EUR and include applicable taxes unless otherwise stated. We reserve the right to change prices at any time without prior notice. The price applicable to your order will be the price shown at the time of purchase.
+                Our base prices are in Ghana cedis (GHS). You may view converted prices in another currency; final payment currency and any additional charges will be confirmed at checkout. We reserve the right to change prices at any time without prior notice. The price applicable to your order will be the price shown at the time of purchase.
               </p>
             </section>
 

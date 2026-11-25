@@ -67,11 +67,11 @@ export default function ProductPage() {
   }, [handle, selectedLocale.countryCode]);
 
   const handleAddToCart = async () => {
-    if (paystackStorefrontUrl) { window.location.assign(paystackStorefrontUrl); return; }
     if (!product || !selectedVariant) return;
 
     const variant = product.variants.edges.find(v => v.node.id === selectedVariant);
-    if (!variant) return;
+    if (!variant?.node.availableForSale || product.tags?.includes('coming-soon')) return;
+    if (paystackStorefrontUrl) { window.location.assign(paystackStorefrontUrl); return; }
 
     setAdding(true);
 
@@ -95,7 +95,8 @@ export default function ProductPage() {
   };
 
   const currentVariant = product?.variants.edges.find(v => v.node.id === selectedVariant)?.node;
-  const isAvailable = currentVariant?.availableForSale ?? false;
+  const isComingSoon = product?.tags?.includes('coming-soon') ?? false;
+  const isAvailable = !isComingSoon && (currentVariant?.availableForSale ?? false);
 
   if (loading) {
     return (
@@ -229,7 +230,7 @@ export default function ProductPage() {
                     Sizing
                   </AccordionTrigger>
                   <AccordionContent className="text-xs text-muted-foreground leading-relaxed pb-4">
-                    Please refer to our size guide for detailed measurements. If you're between sizes, we recommend sizing up for a more relaxed fit.
+                    {product.handle === 'thy-grace-cap' ? 'One size.' : 'All tees are available in M, L, XL, 2XL and 3XL. Contact support@thygrace.com for help choosing your size.'}
                   </AccordionContent>
                 </AccordionItem>
 
@@ -271,7 +272,7 @@ export default function ProductPage() {
                     Delivery and Returns
                   </AccordionTrigger>
                   <AccordionContent className="text-xs text-muted-foreground leading-relaxed pb-4">
-                    Please review our Shipping & Returns page for the latest delivery and return information.
+                    Thygracemerch books and arranges delivery. Delivery takes 48–72 hours after order confirmation. Charges vary by destination and are confirmed before payment. <Link to="/info#delivery" className="underline">Delivery and returns information</Link>.
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
@@ -299,7 +300,7 @@ export default function ProductPage() {
               ))
             ) : (
               <div className="aspect-square bg-secondary flex items-center justify-center">
-                <span className="text-xs text-muted-foreground">No image</span>
+                <span className="text-xs text-muted-foreground">Product photo coming soon</span>
               </div>
             )}
           </div>
@@ -373,7 +374,7 @@ export default function ProductPage() {
                             disabled={!available}
                             className="text-xs"
                           >
-                            {size} {!available && '- Sold Out'}
+                            {size} {!available && (isComingSoon ? '- Coming soon' : '- Sold Out')}
                           </SelectItem>
                         );
                       })}
@@ -393,7 +394,7 @@ export default function ProductPage() {
                   {adding ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
                   ) : !isAvailable ? (
-                    'Sold Out'
+                    isComingSoon ? 'Coming soon' : 'Sold Out'
                   ) : (
                     <>
                       {paystackStorefrontUrl ? 'Shop on Paystack — ' : 'Add to Bag — '}{currentVariant && formatPrice(currentVariant.price.amount, currentVariant.price.currencyCode)}
@@ -433,7 +434,7 @@ export default function ProductPage() {
                       disabled={!available}
                       className="text-xs"
                     >
-                      {size} {!available && '- Sold Out'}
+                      {size} {!available && (isComingSoon ? '- Coming soon' : '- Sold Out')}
                     </SelectItem>
                   );
                 })}
@@ -448,7 +449,7 @@ export default function ProductPage() {
             {adding ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : !isAvailable ? (
-              'Sold Out'
+              isComingSoon ? 'Coming soon' : 'Sold Out'
             ) : (
               <>
                 {paystackStorefrontUrl ? 'Shop on Paystack — ' : 'Add to Bag — '}{currentVariant && formatPrice(currentVariant.price.amount, currentVariant.price.currencyCode)}

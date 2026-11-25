@@ -9,11 +9,14 @@ import './ProductImage.css';
 
 // Approved merchandise only. Do not create fillers or copy products from the reference site.
 const approvedHandles = [
-  'beauty-for-ashes-tee',
   'jesus-is-lord-tee',
-  'thy-grace-cap',
   'trusting-god-tee',
+  'thy-grace-cap',
+  'beauty-for-ashes-tee',
+  'king-jesus-tee',
+  'word-piece',
   'more-than-gold-tee',
+  'purpose-life-tee',
 ];
 
 export default function HomeCollection() {
@@ -144,9 +147,10 @@ export default function HomeCollection() {
                       loading="lazy"
                       decoding="async"
                     />
-                  ) : <span className="thy-edit__missing">Image unavailable</span>}
+                  ) : <span className="thy-edit__missing">Photo coming soon</span>}
                 </div>
                 <span className="thy-edit__name">{node.title}</span>
+                {node.tags?.includes('coming-soon') && <span className="thy-edit__availability">Next drop · Coming soon</span>}
                 <span className="thy-edit__price">{formatPrice(node.priceRange.minVariantPrice.amount, node.priceRange.minVariantPrice.currencyCode)}</span>
               </Link>
             ))}
