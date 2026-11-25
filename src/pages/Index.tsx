@@ -1,7 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import Layout from '@/components/Layout';
 import HomeCollection from '@/components/HomeCollection';
-import NewsletterSignup from '@/components/NewsletterSignup';
 import CampaignPhotoHero from '@/components/CampaignPhotoHero';
 
 export default function Index() {
@@ -13,7 +12,6 @@ export default function Index() {
       </Helmet>
       <CampaignPhotoHero />
       <HomeCollection />
-      <NewsletterSignup />
     </Layout>
   );
 }

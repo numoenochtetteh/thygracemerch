@@ -18,12 +18,11 @@ const sections = [
   {
     id: 'what-we-collect', title: 'What We Collect', paragraphs: [
       'When you place an order we collect your name, email, phone number and delivery address — the minimum needed to fulfil and deliver your order.',
-      'If you join our newsletter we store your email address so we can send you updates about drops and events.',
     ],
   },
   {
     id: 'how-we-use-it', title: 'How We Use It', paragraphs: [
-      'Order details are used to process payment (via Paystack), arrange delivery and provide support. Newsletter emails are used only for THY-GRACE updates — we do not sell or share your information with third parties for marketing.',
+      'Order details are used to process payment (via Paystack), arrange delivery and provide support. We do not sell or share your information with third parties for marketing.',
     ],
   },
 ];
@@ -45,7 +44,7 @@ export default function InfoPage() {
         </section>)}
         <section id="your-choices" className="scroll-mt-28">
           <h2 className="text-lg font-semibold text-[#171717] normal-case tracking-normal mb-3">Your Choices</h2>
-          <p>You can unsubscribe from the newsletter at any time, and you can ask us to delete your personal data by emailing <a className="underline underline-offset-4 break-words" href={`mailto:${support}`}>{support}</a>.</p>
+          <p>You can ask us to delete your personal data by emailing <a className="underline underline-offset-4 break-words" href={`mailto:${support}`}>{support}</a>.</p>
         </section>
         <section id="questions" className="scroll-mt-28">
           <h2 className="text-lg font-semibold text-[#171717] normal-case tracking-normal mb-3">Questions</h2>
