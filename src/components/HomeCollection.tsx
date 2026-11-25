@@ -155,21 +155,11 @@ export default function HomeCollection() {
               </Link>
             ))}
           </div>
-          <div className="thy-edit__controls" aria-label="Carousel navigation">
+          {maxPosition > 0 && <div className="thy-edit__controls" aria-label="Carousel navigation">
             <button className="thy-edit__arrow" type="button" onClick={() => move(-1)} disabled={!canPrevious} aria-label="Previous product" aria-controls="thy-edit-track"><ChevronLeft size={19} /></button>
-            <div className="thy-edit__positions" aria-label="Choose carousel position">
-              {Array.from({ length: maxPosition + 1 }, (_, index) => <button
-                key={index}
-                type="button"
-                onClick={() => goTo(index)}
-                aria-label={`Go to carousel position ${index + 1}`}
-                aria-current={position === index ? 'step' : undefined}
-                aria-controls="thy-edit-track"
-              ><span /></button>)}
-            </div>
             <span className="thy-edit__count" aria-live="polite" aria-atomic="true">{position + 1} / {maxPosition + 1}</span>
             <button className="thy-edit__arrow" type="button" onClick={() => move(1)} disabled={!canNext} aria-label="Next product" aria-controls="thy-edit-track"><ChevronRight size={19} /></button>
-          </div>
+          </div>}
         </>
       )}
     </section>

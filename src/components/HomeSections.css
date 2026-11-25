@@ -270,25 +270,20 @@
 .thy-edit__heading h2 .thy-edit__shop-dot{position:relative;display:inline-block;width:6px;height:6px;border-radius:50%;padding:0;background:#285c39;flex:none}
 .thy-edit__shop-dot:after{content:'';position:absolute;inset:-4px;border:1px solid #285c39;border-radius:50%;animation:thy-shop-pulse 2.4s ease-out infinite}
 @keyframes thy-shop-pulse{0%{transform:scale(.55);opacity:.7}80%,100%{transform:scale(1.45);opacity:0}}
-.thy-edit__controls{gap:14px}
-.thy-edit__controls .thy-edit__arrow{width:44px;height:44px;border:1px solid #ddd;border-radius:50%;transition:background-color .2s,border-color .2s,color .2s}
-.thy-edit__controls .thy-edit__arrow:disabled{opacity:.4}
-.thy-edit__controls .thy-edit__arrow:not(:disabled):is(:hover,:focus-visible){background:#285c39;border-color:#285c39;color:#fff}
+.thy-edit__controls{gap:18px}
+.thy-edit__controls .thy-edit__arrow{width:44px;height:44px;border:0;border-radius:8px;background:transparent;color:#285c39;transition:background-color .2s,color .2s}
+.thy-edit__controls .thy-edit__arrow:disabled{color:#c7c7c7}
+.thy-edit__controls .thy-edit__arrow:not(:disabled):is(:hover,:focus-visible){background:#edf3ee;color:#1c482a}
 .thy-edit__arrow svg{transition:transform .2s}
-.thy-edit__arrow:not(:disabled):active svg{transform:scale(.85)}
-.thy-edit__positions{display:flex;align-items:center;gap:0}
-.thy-edit__positions button{width:30px;height:44px;padding:0}
-.thy-edit__positions button span{display:block;width:6px;height:6px;border-radius:20px;background:#c7c7c7;transition:width .25s,background-color .25s}
-.thy-edit__positions button[aria-current=step] span{width:18px;background:#285c39}
-.thy-edit__count{font-size:11px;min-width:32px;color:#666;text-align:center;font-variant-numeric:tabular-nums}
+.thy-edit__arrow:not(:disabled):active svg{transform:scale(.9)}
+.thy-edit__count{font-size:12px;min-width:42px;color:#285c39;text-align:center;font-variant-numeric:tabular-nums;letter-spacing:.04em}
 @media(max-width:767px){
  .thy-edit{scroll-margin-top:100px}
  .thy-edit__controls{gap:9px}
- .thy-edit__positions button{width:27px}
 }
 @media(prefers-reduced-motion:reduce){
  .thy-edit__shop-dot:after{animation:none;display:none}
- .thy-edit__controls .thy-edit__arrow,.thy-edit__arrow svg,.thy-edit__positions button span{transition:none}
+ .thy-edit__controls .thy-edit__arrow,.thy-edit__arrow svg{transition:none}
 }
 
 .thy-edit__availability{font-size:11px;color:#285c39;margin:0 0 5px}
